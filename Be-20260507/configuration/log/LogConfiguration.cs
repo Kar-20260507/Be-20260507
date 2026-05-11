@@ -10,7 +10,28 @@ namespace Be_20260507.configuration.log;
 public static class LogConfiguration
 {
     private const string OUTPUT_TEMPLATE =
-        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {ProcessId} --- [{ThreadId,8}] {SourceContext,-40} : {Message:lj}{NewLine}{Exception}";
+        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} {Level:u3} {ProcessId} --- [{ThreadId,5}] {SourceContext,-50} : {Message:lj}{NewLine}{Exception}";
+
+    public static void handleFullLogConfiguration(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((context, services, configuration) =>
+            {
+                configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services);
+
+                var appConfiguration = services.GetRequiredService<IOptions<AppConfiguration>>().Value;
+
+                configuration.handleBaseLogConfiguration();
+
+                configuration.handleFileLogConfiguration($"/home/logs/{appConfiguration.Name}/info-.log",
+                    LogEventLevel.Information);
+
+                configuration.handleFileLogConfiguration($"/home/logs/{appConfiguration.Name}/error-.log",
+                    LogEventLevel.Error);
+            }
+        );
+    }
 
     public static void handleBaseLogConfiguration(this LoggerConfiguration loggerConfiguration)
     {
@@ -39,27 +60,6 @@ public static class LogConfiguration
             encoding: Encoding.UTF8,
             restrictedToMinimumLevel: restrictedToMinimumLevel,
             outputTemplate: OUTPUT_TEMPLATE
-        );
-    }
-
-    public static void handleFullLogConfiguration(this WebApplicationBuilder builder)
-    {
-        builder.Host.UseSerilog((context, services, configuration) =>
-            {
-                configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services);
-
-                var appConfiguration = services.GetRequiredService<IOptions<AppConfiguration>>().Value;
-
-                configuration.handleBaseLogConfiguration();
-
-                configuration.handleFileLogConfiguration($"/home/logs/{appConfiguration.Name}/info-.log",
-                    LogEventLevel.Information);
-
-                configuration.handleFileLogConfiguration($"/home/logs/{appConfiguration.Name}/error-.log",
-                    LogEventLevel.Error);
-            }
         );
     }
 }

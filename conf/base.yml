@@ -1,0 +1,4 @@
+logNameSet: # 需要打印控制台日志的名称集合
+  - be.normal # 所有以 Be_20260507开头的日志
+notLogNameSet: # 不需要打印控制台日志的名称集合
+  - Microsoft.AspNetCore.Hosting.Diagnostics

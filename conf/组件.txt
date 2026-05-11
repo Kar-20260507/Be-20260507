@@ -1,0 +1,4 @@
+mysql
+kafka
+redis
+minio

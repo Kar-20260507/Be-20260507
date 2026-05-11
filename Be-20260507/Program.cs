@@ -2,6 +2,8 @@ using Be_20260507.configuration.common;
 using Scalar.AspNetCore;
 using Serilog;
 
+Console.TreatControlCAsInput = true; // 警用控制输入 Ctrl+C关闭程序
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.addCommonConfiguration(); // 本项目注入配置模块
