@@ -44,11 +44,6 @@ public static class LogConfiguration
 
     public static void handleFullLogConfiguration(this WebApplicationBuilder builder)
     {
-        builder.Services.AddOptions<AppConfiguration>()
-            .BindConfiguration(nameof(AppConfiguration))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
         builder.Host.UseSerilog((context, services, configuration) =>
             {
                 configuration

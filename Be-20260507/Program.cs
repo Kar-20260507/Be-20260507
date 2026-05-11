@@ -1,10 +1,10 @@
-using Be_20260507.configuration.log;
+using Be_20260507.configuration.common;
 using Scalar.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.handleFullLogConfiguration(); // 日志模块
+builder.addCommonConfiguration(); // 本项目注入配置模块
 
 builder.Services.AddControllers();
 
