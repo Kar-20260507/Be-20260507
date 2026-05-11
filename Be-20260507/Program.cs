@@ -1,38 +1,14 @@
 using Be_20260507.configuration.log;
-using Be_20260507.model.configuration;
-using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOptions<AppConfiguration>()
-    .BindConfiguration(nameof(AppConfiguration))
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
+builder.handleFullLogConfiguration(); // 日志模块
 
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
-
-builder.Host.UseSerilog((context, services, configuration) =>
-    {
-        configuration
-            .ReadFrom.Configuration(context.Configuration)
-            .ReadFrom.Services(services);
-
-        var appConfiguration = services.GetRequiredService<IOptions<AppConfiguration>>().Value;
-
-        configuration.handleBaseConfiguration();
-
-        configuration.handleFileConfiguration($"/home/logs/{appConfiguration.Name}/info-.log",
-            LogEventLevel.Information);
-
-        configuration.handleFileConfiguration($"/home/logs/{appConfiguration.Name}/error-.log",
-            LogEventLevel.Error);
-    }
-);
 
 try
 {
@@ -42,10 +18,8 @@ try
     {
         app.MapOpenApi();
 
-        app.MapScalarApiReference();
+        app.MapScalarApiReference(); // 接口文档
     }
-
-    app.UseHttpsRedirection();
 
     app.UseAuthorization();
 
