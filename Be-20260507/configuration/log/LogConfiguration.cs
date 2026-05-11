@@ -3,22 +3,23 @@ using Be_20260507.model.configuration;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Be_20260507.configuration.log;
 
 public static class LogConfiguration
 {
     private const string OUTPUT_TEMPLATE =
-        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} {Level:u3} {ProcessId} --- [{ThreadId,8}] {SourceContext,-40} : {Message:lj}{NewLine}{Exception}";
+        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {ProcessId} --- [{ThreadId,8}] {SourceContext,-40} : {Message:lj}{NewLine}{Exception}";
 
     public static void handleBaseLogConfiguration(this LoggerConfiguration loggerConfiguration)
     {
         loggerConfiguration
-            .MinimumLevel.Information()
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()
             .Enrich.WithThreadId()
             .WriteTo.Console(
+                theme: AnsiConsoleTheme.Code,
                 outputTemplate: OUTPUT_TEMPLATE
             );
     }
