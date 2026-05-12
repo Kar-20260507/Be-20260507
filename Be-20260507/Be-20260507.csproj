@@ -26,11 +26,15 @@
     <ItemGroup>
         <Folder Include="model\annotation\base\"/>
         <Folder Include="model\bo\"/>
-        <Folder Include="model\constant\"/>
         <Folder Include="model\domain\"/>
         <Folder Include="model\dto\"/>
         <Folder Include="model\enums\"/>
         <Folder Include="model\vo\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="resources\base.yml"/>
+        <EmbeddedResource Include="resources\base.yml"/>
     </ItemGroup>
 
 </Project>

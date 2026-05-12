@@ -1,4 +1,4 @@
-namespace Be_20260507.model.configuration;
+namespace Be_20260507.model.configuration.common;
 
 public class AppConfiguration
 {

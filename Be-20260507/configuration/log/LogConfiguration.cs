@@ -1,5 +1,5 @@
 using System.Text;
-using Be_20260507.model.configuration;
+using Be_20260507.model.configuration.common;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
@@ -39,9 +39,10 @@ public static class LogConfiguration
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()
             .Enrich.WithThreadId()
-            .WriteTo.Console(
-                theme: AnsiConsoleTheme.Code,
-                outputTemplate: OUTPUT_TEMPLATE
+            .WriteTo.Conditional(
+                logEvent => BeLogFilter.decide(logEvent),
+                config => config.Console(theme: AnsiConsoleTheme.Code,
+                    outputTemplate: OUTPUT_TEMPLATE)
             );
     }
 

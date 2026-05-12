@@ -1,5 +1,5 @@
 using Be_20260507.configuration.log;
-using Be_20260507.model.configuration;
+using Be_20260507.model.configuration.common;
 
 namespace Be_20260507.configuration.common;
 
